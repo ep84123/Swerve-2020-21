@@ -20,16 +20,16 @@ public class RobotMap {
 
             public static class Motor {
                 public static class FRONT_RIGHT {
-                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                    public static final int MODULE_PORT = 2, DRIVE_PORT = 2;
                 }
                 public static class FRONT_LEFT {
-                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                    public static final int MODULE_PORT = 2, DRIVE_PORT = 2;
                 }
                 public static class BACK_RIGHT {
-                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                    public static final int MODULE_PORT = 2, DRIVE_PORT = 2;
                 }
                 public static class BACK_LEFT {
-                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                    public static final int MODULE_PORT = 2, DRIVE_PORT = 2;
                 }
             }
         }

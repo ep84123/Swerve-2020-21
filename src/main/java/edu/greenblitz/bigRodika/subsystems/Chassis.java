@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.OI;
 import edu.greenblitz.bigRodika.RobotMap;
-import edu.greenblitz.bigRodika.commands.chassis.driver.ArcadeDrive;
 import edu.greenblitz.gblib.encoder.IEncoder;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
 import edu.greenblitz.gblib.gyroscope.IGyroscope;
@@ -27,9 +26,6 @@ public class Chassis extends GBSubsystem {
     public static void init() {
         if (instance == null) {
             instance = new Chassis();
-            instance.setDefaultCommand(
-                    new ArcadeDrive(OI.getInstance().getMainJoystick())
-            );
         }
     }
 
@@ -45,13 +41,13 @@ public class Chassis extends GBSubsystem {
 
     public void arcadeDrive() {}
 
-    public double getMeters() {}
-
-    public double getRate() {}
-
-    public double getLinearVelocity() {}
-
-    public double getAngularVelocityByWheels() {}
+//    public double getMeters() {}
+//
+//    public double getRate() {}
+//
+//    public double getLinearVelocity() {}
+//
+//    public double getAngularVelocityByWheels() {}
 
     public double getAngle() {
         return gyroscope.getNormalizedYaw();
@@ -68,10 +64,10 @@ public class Chassis extends GBSubsystem {
     public void resetGyro() {
         gyroscope.reset();
     }
-
-    public double getWheelDistance() {}
-
-    public Position getLocation() {}
+//
+//    public double getWheelDistance() {}
+//
+//    public Position getLocation() {}
 
     @Override
     public void periodic() {}
