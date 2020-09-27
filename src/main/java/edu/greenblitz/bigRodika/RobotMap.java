@@ -23,6 +23,21 @@ public class RobotMap {
 
         public static class Chassis {
             public static final double WHEEL_DIST = 0.622;
+
+            public static class Motor {
+                public static class FRONT_RIGHT {
+                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                }
+                public static class FRONT_LEFT {
+                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                }
+                public static class BACK_RIGHT {
+                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                }
+                public static class BACK_LEFT {
+                    public static final int MODULE_PORT = , DRIVE_PORT = ;
+                }
+            }
         }
     }
 }

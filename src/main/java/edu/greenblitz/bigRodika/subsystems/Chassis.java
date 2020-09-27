@@ -22,43 +22,7 @@ public class Chassis extends GBSubsystem {
     private IGyroscope gyroscope;
 //    private PowerDistributionPanel robotPDP;
 
-    private Chassis() {
-        rightLeader = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.RIGHT_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightFollower1 = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.RIGHT_FOLLOWER_1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightFollower2 = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.RIGHT_FOLLOWER_2, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftLeader = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.LEFT_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftFollower1 = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.LEFT_FOLLOWER_1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftFollower2 = new CANSparkMax(RobotMap.Limbo2.Chassis.Motor.LEFT_FOLLOWER_2, CANSparkMaxLowLevel.MotorType.kBrushless);   //big-haim
-
-        rightLeader.setSmartCurrentLimit(40);
-        rightFollower1.setSmartCurrentLimit(40);
-        rightFollower2.setSmartCurrentLimit(40);
-        leftLeader.setSmartCurrentLimit(40);
-        leftFollower1.setSmartCurrentLimit(40);
-        leftFollower2.setSmartCurrentLimit(40);
-
-        leftFollower1.follow(leftLeader);
-        leftFollower2.follow(leftLeader);
-        rightFollower1.follow(rightLeader);
-        rightFollower2.follow(rightLeader);
-
-        leftLeader.setInverted(false);
-//        leftFollower1.setInverted(true);
-//        leftFollower2.setInverted(true);
-        rightLeader.setInverted(true);
-//        leftFollower1.setInverted(true);
-//        leftFollower2.setInverted(true);
-
-        leftEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.Encoder.NORM_CONST_SPARK, leftLeader);
-        leftEncoder.invert(false);
-        rightEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.Encoder.NORM_CONST_SPARK, rightLeader);
-        rightEncoder.invert(false);
-
-        gyroscope = new PigeonGyro(
-                new PigeonIMU(Funnel.getInstance().getPusher().getTalon()));
-        gyroscope.reset();
-        gyroscope.inverse();
-    }
+    private Chassis() {}
 
     public static void init() {
         if (instance == null) {
@@ -73,63 +37,21 @@ public class Chassis extends GBSubsystem {
         return instance;
     }
 
-    public void changeGear() {
-        leftEncoder.switchGear();
-        rightEncoder.switchGear();
-    }
+    public void moveMotors() {}
 
-    public void moveMotors(double left, double right) {
-        putNumber("Left Power", left);
-        putNumber("Right Power", right);
-        rightLeader.set(right);
-        leftLeader.set(left);
-    }
+    public void toBrake() {}
 
-    public void toBrake() {
-        rightLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightFollower1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightFollower2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftFollower1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftFollower2.setIdleMode(CANSparkMax.IdleMode.kBrake);   //big-haim
-    }
+    public void toCoast() {}
 
-    public void toCoast() {
-        rightLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightFollower1.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        rightFollower2.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftFollower1.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        leftFollower2.setIdleMode(CANSparkMax.IdleMode.kCoast);   //big-haim
-    }
+    public void arcadeDrive() {}
 
-    public void arcadeDrive(double moveValue, double rotateValue) {
-        moveMotors(moveValue - rotateValue, moveValue + rotateValue);
-    }
+    public double getMeters() {}
 
-    public double getLeftMeters() {
-        return leftEncoder.getNormalizedTicks();
-    }
+    public double getRate() {}
 
-    public double getRightMeters() {
-        return rightEncoder.getNormalizedTicks();
-    }
+    public double getLinearVelocity() {}
 
-    public double getLeftRate() {
-        return leftEncoder.getNormalizedVelocity();
-    }
-
-    public double getRightRate() {
-        return rightEncoder.getNormalizedVelocity();
-    }
-
-    public double getLinearVelocity() {
-        return 0.5 * (getRightRate() + getLeftRate());
-    }
-
-    public double getAngularVelocityByWheels() {
-        return getWheelDistance() * (getRightRate() - getLeftRate());
-    }
+    public double getAngularVelocityByWheels() {}
 
     public double getAngle() {
         return gyroscope.getNormalizedYaw();
@@ -147,30 +69,13 @@ public class Chassis extends GBSubsystem {
         gyroscope.reset();
     }
 
-    public double getWheelDistance() {
-        return RobotMap.Limbo2.Chassis.WHEEL_DIST;
-    }
+    public double getWheelDistance() {}
 
-    public Position getLocation() {
-        return Localizer.getInstance().getLocation();
-    }
+    public Position getLocation() {}
 
     @Override
-    public void periodic() {
+    public void periodic() {}
 
-        super.periodic();
-
-        putNumber("Left vel enc", leftEncoder.getNormalizedVelocity());
-        putNumber("Right vel enc", rightEncoder.getNormalizedVelocity());
-        putNumber("Angle vel by wheel", getAngularVelocityByWheels());
-        putNumber("Pigeon angle deg", Math.toDegrees(getAngle()));
-        putString("Location", Chassis.getInstance().getLocation().toString());
-
-    }
-
-    public void resetEncoders() {
-        rightEncoder.reset();
-        leftEncoder.reset();
-    }
+    public void resetEncoders() {}
 
 }
