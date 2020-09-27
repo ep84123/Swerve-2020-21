@@ -13,7 +13,6 @@ public class RobotMap {
     public static class Limbo2 {
 
 
-
         public static class Joystick {
             public static final int MAIN = 0;
             public static final double MAIN_DEADZONE = 0.05;
@@ -25,4 +24,5 @@ public class RobotMap {
         public static class Chassis {
             public static final double WHEEL_DIST = 0.622;
         }
+    }
 }
