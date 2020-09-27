@@ -65,82 +65,10 @@ public class OI {
 
     private void initTestButtons() {
 
-        mainJoystick.A.whenPressed(new HoldElevator());
-        mainJoystick.B.whenPressed(new ReleaseElevator());
-
     }
 
     private void initOfficalButtons() {
 
-//        mainJoystick.L1.whenReleased(new ToggleShift());
-
-        mainJoystick.X.whenPressed(new ResetDome(-0.3));
-
-        mainJoystick.Y.whenPressed(new ShootAdjesant(mainJoystick.Y));
-
-//        mainJoystick.START.whenPressed(new ToSpeed());
-//        mainJoystick.BACK.whenPressed(new ToPower());
-
-        // ---------------------------------------------------------------
-
-        secondStick.R1.whenPressed(new CompleteShoot(secondStick));
-        secondStick.R1.whenReleased(new ParallelCommandGroup(new StopShooter(),
-                                                             new ResetDome(-0.5)));
-
-        secondStick.L1.whileHeld(new InsertIntoShooter(1.0, 0.8, 0.6));
-        secondStick.L1.whenReleased(new ParallelCommandGroup(new StopPusher(),
-                new StopInserter(), new StopRoller()));
-
-        secondStick.Y.whileHeld(new
-                ParallelCommandGroup(
-                        new RollByConstant(-0.5), new PushByConstant(-0.3), new InsertByConstant(-0.6)));
-        secondStick.Y.whenReleased(new ParallelCommandGroup(new StopPusher(), new StopInserter()
-        , new StopRoller()));
-
-        secondStick.B.whenPressed(new ToggleExtender());
-        secondStick.A.whileHeld(new RollByConstant(1.0));
-        secondStick.R3.whileHeld(new RollByConstant(-0.7));
-
-        secondStick.START.whenPressed(new FullyAutoThreeStage(1650)); // 1650
-        secondStick.START.whenReleased(new StopShooter());
-
-        secondStick.X.whenPressed(new ShootByConstant(
-                Shooter.getInstance().getDesiredPower(2000)
-        ));
-        secondStick.X.whenReleased(new GBCommand() {
-            @Override
-            public void initialize() {
-                if (!secondStick.R1.get()) new StopShooter().schedule();
-            }
-
-            @Override
-            public boolean isFinished() {
-                return true;
-            }
-        });
-
-        secondStick.POV_UP.whileHeld(new DomeMoveByConstant(0.3));
-
-        secondStick.POV_DOWN.whileHeld(new DomeMoveByConstant(-0.3));
-
-        secondStick.POV_LEFT.whileHeld(new MoveTurretByConstant(-0.2));
-
-        secondStick.POV_RIGHT.whileHeld(new MoveTurretByConstant(0.2));
-
-        secondStick.BACK.whenPressed(new ResetDome(-0.3));
-
-        secondStick.L3.whenPressed(new GBCommand() {
-            @Override
-            public void initialize() {
-                CommandScheduler.getInstance().cancelAll();
-                Shooter.getInstance().shoot(0);
-            }
-
-            @Override
-            public boolean isFinished() {
-                return true;
-            }
-        });
     }
 
     public SmartJoystick getMainJoystick() {
