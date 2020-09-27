@@ -1,11 +1,5 @@
 package edu.greenblitz.bigRodika;
 
-import edu.greenblitz.gblib.gears.Gear;
-import edu.greenblitz.gblib.gears.GearDependentValue;
-import org.greenblitz.motion.interpolation.Dataset;
-import org.greenblitz.motion.profiling.ProfilingConfiguration;
-import org.greenblitz.motion.profiling.ProfilingData;
-
 import java.util.HashMap;
 
 public class RobotMap {
