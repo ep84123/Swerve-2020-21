@@ -1,6 +1,7 @@
 package edu.greenblitz.bigRodika.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
@@ -10,6 +11,7 @@ import edu.greenblitz.gblib.gears.GearDependentValue;
 
 public class SwerveModule extends GBSubsystem {
 
+    //TODO : refactor m --> m_
     private final WPI_TalonSRX mRotate;
     private final CANSparkMax mDrive;
     private final IEncoder angleEncoder;
@@ -22,6 +24,7 @@ public class SwerveModule extends GBSubsystem {
         angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER,mRotate);// again, values from past code
     }
 
+    //TODO: use set() with position mode
     public void setAngle(double destAngleDegs){
         double dAngle =  destAngleDegs - getNormAngleDegs();
         if (dAngle == 0){
@@ -35,6 +38,8 @@ public class SwerveModule extends GBSubsystem {
             mRotate.set(-1);
         }
     }
+
+    //TODO: create a follow function that gets an ID and follows it
 
     public void setPower(double power){
         mDrive.set(power);
