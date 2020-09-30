@@ -28,14 +28,14 @@ public class SwerveModule extends GBSubsystem {
         if(dAngle > 0 && dAngle < 180){
             mRotate.set(1);
         }
-        else if(dAngle > 0 && dAngle < 180){
+        else if(dAngle > 0 && dAngle > 180){
             mRotate.set(-1);
         }
 
-        if(dAngle < 0 && dAngle < 180){
+        if(dAngle < 0 && dAngle > -180){
             mRotate.set(-1);
         }
-        else if(dAngle < 0 && dAngle < 180){
+        else if(dAngle < 0 && dAngle < -180){
             mRotate.set(1);
         }
     }
