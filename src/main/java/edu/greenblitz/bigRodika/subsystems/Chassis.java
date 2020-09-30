@@ -8,15 +8,25 @@ import edu.greenblitz.gblib.gyroscope.IGyroscope;
 public class Chassis extends GBSubsystem {
     private static Chassis instance;
 
-    private SwerveModule FrontLeft = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.ROTATE_PORT, RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.DRIVE_PORT);
-    private SwerveModule FrontRight = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.ROTATE_PORT, RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.DRIVE_PORT);
-    private SwerveModule BackLeft = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.ROTATE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.DRIVE_PORT);
-    private SwerveModule BackRight = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ROTATE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT);
+    private final SwerveModule[] swerveModules = new SwerveModule[4];
 
     private IGyroscope gyroscope;
 //    private PowerDistributionPanel robotPDP;
 
-    private Chassis() {}
+    private Chassis() {
+        SwerveModule frontLeft = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.ROTATE_PORT,
+                RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.ID);
+        swerveModules[frontLeft.getID()] = frontLeft;
+        SwerveModule frontRight = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.ROTATE_PORT,
+                RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.ID);
+        swerveModules[frontRight.getID()] = frontRight;
+        SwerveModule backLeft = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.ROTATE_PORT,
+                RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.ID);
+        swerveModules[backLeft.getID()] = backLeft;
+        SwerveModule backRight = new SwerveModule(RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ROTATE_PORT,
+                RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID);
+        swerveModules[backRight.getID()] = backRight;
+    }
 
     public static void init() {
         if (instance == null) {
@@ -30,44 +40,38 @@ public class Chassis extends GBSubsystem {
     }
 
     public void moveMotors(double[] powers, double[] angles) {
-        FrontLeft.setPower(powers[RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.ID]);
-        FrontLeft.setAngle(angles[RobotMap.Limbo2.Chassis.Motor.FRONT_LEFT.ID]);
-        FrontRight.setPower(powers[RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.ID]);
-        FrontRight.setAngle(angles[RobotMap.Limbo2.Chassis.Motor.FRONT_RIGHT.ID]);
-        BackLeft.setPower(powers[RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.ID]);
-        BackLeft.setAngle(angles[RobotMap.Limbo2.Chassis.Motor.BACK_LEFT.ID]);
-        BackRight.setPower(powers[RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID]);
-        BackRight.setAngle(angles[RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID]);
+        for (SwerveModule swerveModule : swerveModules){
+            swerveModule.setPower(Math.max(Math.min(powers[swerveModule.getID()], 1), -1));
+            swerveModule.setAngle(angles[swerveModule.getID()]);
+        }
     }
 
     public void toBrake() {
-        FrontLeft.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
-        FrontRight.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
-        BackLeft.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
-        BackRight.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
+        }
     }
 
     public void toCoast() {
-        FrontLeft.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
-        FrontRight.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
-        BackLeft.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
-        BackRight.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
+        }
     }
 
-    public void arcadeDrive(double power, double rotation) {
-        double[] powers = {power, power, power, power};
+    public void arcadeDrive(double power, double rotate) {
+        double[] powers = {power - rotate, power + rotate, power - rotate, power + rotate};
         double[] angles = {0, 0, 0, 0};
         moveMotors(powers, angles);
     }
 
     public double[] getMeters() {
-        return new double[]{FrontLeft.getAngleEncoder().getNormalizedTicks(), FrontRight.getAngleEncoder().getNormalizedTicks(),
-                BackLeft.getAngleEncoder().getNormalizedTicks(), BackRight.getAngleEncoder().getNormalizedTicks()};
+        return new double[]{swerveModules[0].getAngleEncoder().getNormalizedTicks(), swerveModules[0].getAngleEncoder().getNormalizedTicks(),
+                swerveModules[0].getAngleEncoder().getNormalizedTicks(), swerveModules[0].getAngleEncoder().getNormalizedTicks()};
     }
 
     public double[] getRates() {
-        return new double[]{FrontLeft.getAngleEncoder().getNormalizedVelocity(), FrontRight.getAngleEncoder().getNormalizedVelocity(),
-                BackLeft.getAngleEncoder().getNormalizedVelocity(), BackRight.getAngleEncoder().getNormalizedVelocity()};
+        return new double[]{swerveModules[0].getAngleEncoder().getNormalizedVelocity(), swerveModules[0].getAngleEncoder().getNormalizedVelocity(),
+                swerveModules[0].getAngleEncoder().getNormalizedVelocity(), swerveModules[0].getAngleEncoder().getNormalizedVelocity()};
     }
 
 //    public double getLinearVelocity() {}
@@ -98,10 +102,9 @@ public class Chassis extends GBSubsystem {
     public void periodic() {}
 
     public void resetEncoders() {
-        FrontLeft.getAngleEncoder().reset();
-        FrontRight.getAngleEncoder().reset();
-        BackLeft.getAngleEncoder().reset();
-        BackRight.getAngleEncoder().reset();
+        for (SwerveModule swerveModule : swerveModules){
+            swerveModule.getAngleEncoder().reset();
+        }
     }
 
 }
