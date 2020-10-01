@@ -48,13 +48,13 @@ public class Chassis extends GBSubsystem {
 
     public void toBrake() {
         for (SwerveModule swerveModule : swerveModules) {
-            swerveModule.getmDrive().setIdleMode(CANSparkMax.IdleMode.kBrake);
+            swerveModule.getM_Drive().setIdleMode(CANSparkMax.IdleMode.kBrake);
         }
     }
 
     public void toCoast() {
         for (SwerveModule swerveModule : swerveModules) {
-            swerveModule.getmDrive().setIdleMode(CANSparkMax.IdleMode.kCoast);
+            swerveModule.getM_Drive().setIdleMode(CANSparkMax.IdleMode.kCoast);
         }
     }
 

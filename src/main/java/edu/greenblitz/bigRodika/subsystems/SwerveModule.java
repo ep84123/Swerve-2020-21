@@ -1,7 +1,7 @@
 package edu.greenblitz.bigRodika.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
@@ -11,38 +11,29 @@ import edu.greenblitz.gblib.gears.GearDependentValue;
 
 public class SwerveModule extends GBSubsystem {
 
-    //TODO : refactor m --> m_
-    private final WPI_TalonSRX mRotate;
-    private final CANSparkMax mDrive;
+    private final WPI_TalonSRX m_Rotate;
+    private final CANSparkMax m_Drive;
     private final IEncoder angleEncoder;
     private final int ID;
 
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in init' should i just add theme to init?
         this.ID = ID;
-        mRotate = new WPI_TalonSRX(rotatePort);
-        mDrive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
-        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER,mRotate);// again, values from past code
+        m_Rotate = new WPI_TalonSRX(rotatePort);
+        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
+        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER, m_Rotate);// again, values from past code
     }
 
-    //TODO: use set() with position mode
     public void setAngle(double destAngleDegs){
-        double dAngle =  destAngleDegs - getNormAngleDegs();
-        if (dAngle == 0){
-            mRotate.set(0);
-        }
-
-        else if(dAngle > 0 && dAngle <= 180 || dAngle <= -180){
-            mRotate.set(1);
-        }
-        else {
-            mRotate.set(-1);
-        }
+        double destAngleTicks = degs2NormalizedTicks(destAngleDegs);
+        m_Rotate.set(ControlMode.Position, destAngleTicks);
     }
 
-    //TODO: create a follow function that gets an ID and follows it
+    public void setAsFollowerOf(double id){
+        m_Rotate.set(ControlMode.Follower, id);
+    }
 
     public void setPower(double power){
-        mDrive.set(power);
+        m_Drive.set(power);
     }
 
     public double getNormAngleRads() {
@@ -55,12 +46,16 @@ public class SwerveModule extends GBSubsystem {
         return Math.toDegrees(getNormAngleRads());
     }
 
-    public WPI_TalonSRX getmRotate() {
-        return mRotate;
+    public double degs2NormalizedTicks(double alpha){
+        return 2867.0*((Math.PI*alpha)/180.0) + 8974.0;
     }
 
-    public CANSparkMax getmDrive() {
-        return mDrive;
+    public WPI_TalonSRX getM_Rotate() {
+        return m_Rotate;
+    }
+
+    public CANSparkMax getM_Drive() {
+        return m_Drive;
     }
 
     public IEncoder getAngleEncoder() {
