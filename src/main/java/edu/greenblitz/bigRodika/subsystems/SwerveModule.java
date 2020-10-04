@@ -28,8 +28,8 @@ public class SwerveModule extends GBSubsystem {
         m_Rotate.set(ControlMode.Position, destAngleTicks);
     }
 
-    public void setAsFollowerOf(double id){
-        m_Rotate.set(ControlMode.Follower, id);
+    public void setAsFollowerOf(double portID){
+        m_Rotate.set(ControlMode.Follower, portID);
     }
 
     public void setPower(double power){
