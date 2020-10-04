@@ -13,7 +13,7 @@ public class Chassis extends GBSubsystem {
 
     private final SwerveModule[] swerveModules = new SwerveModule[4];
 
-    private IGyroscope gyroscope;
+    private final IGyroscope gyroscope;
 //    private PowerDistributionPanel robotPDP;
 
     private Chassis() {
@@ -88,13 +88,13 @@ public class Chassis extends GBSubsystem {
     }
 
     public double[] getMeters() {
-        return new double[]{swerveModules[0].getAngleEncoder().getNormalizedTicks(), swerveModules[1].getAngleEncoder().getNormalizedTicks(),
-                swerveModules[2].getAngleEncoder().getNormalizedTicks(), swerveModules[3].getAngleEncoder().getNormalizedTicks()};
+        return new double[]{swerveModules[0].getDriveEncoder().getNormalizedTicks(), swerveModules[1].getDriveEncoder().getNormalizedTicks(),
+                swerveModules[2].getDriveEncoder().getNormalizedTicks(), swerveModules[3].getDriveEncoder().getNormalizedTicks()};
     }
 
     public double[] getRates() {
-        return new double[]{swerveModules[0].getAngleEncoder().getNormalizedVelocity(), swerveModules[1].getAngleEncoder().getNormalizedVelocity(),
-                swerveModules[2].getAngleEncoder().getNormalizedVelocity(), swerveModules[3].getAngleEncoder().getNormalizedVelocity()};
+        return new double[]{swerveModules[0].getDriveEncoder().getNormalizedVelocity(), swerveModules[1].getDriveEncoder().getNormalizedVelocity(),
+                swerveModules[2].getDriveEncoder().getNormalizedVelocity(), swerveModules[3].getDriveEncoder().getNormalizedVelocity()};
     }
 
 // TODO: 04/10/2020

@@ -6,30 +6,33 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.gblib.encoder.IEncoder;
+import edu.greenblitz.gblib.encoder.SparkEncoder;
 import edu.greenblitz.gblib.encoder.TalonEncoder;
 import edu.greenblitz.gblib.gears.GearDependentValue;
 
 public class SwerveModule extends GBSubsystem {
 
-    private final WPI_TalonSRX m_Rotate;
+    private final WPI_TalonSRX m_Angle;
     private final CANSparkMax m_Drive;
     private final IEncoder angleEncoder;
+    private final SparkEncoder driveEncoder;
     private final int ID;
 
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in init' should i just add theme to init?
         this.ID = ID;
-        m_Rotate = new WPI_TalonSRX(rotatePort);
+        m_Angle = new WPI_TalonSRX(rotatePort);
         m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
-        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER, m_Rotate);// again, values from past code
+        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SRX, m_Angle);// again, values from past code
+        driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
     public void setAngle(double destAngleDegs){
         double destAngleTicks = degs2NormalizedTicks(destAngleDegs);
-        m_Rotate.set(ControlMode.Position, destAngleTicks);
+        m_Angle.set(ControlMode.Position, destAngleTicks);
     }
 
     public void setAsFollowerOf(double portID){
-        m_Rotate.set(ControlMode.Follower, portID);
+        m_Angle.set(ControlMode.Follower, portID);
     }
 
     public void setPower(double power){
@@ -50,8 +53,8 @@ public class SwerveModule extends GBSubsystem {
         return 2867.0*((Math.PI*alpha)/180.0) + 8974.0;
     }
 
-    public WPI_TalonSRX getM_Rotate() {
-        return m_Rotate;
+    public WPI_TalonSRX getM_Angle() {
+        return m_Angle;
     }
 
     public CANSparkMax getM_Drive() {
@@ -62,5 +65,11 @@ public class SwerveModule extends GBSubsystem {
         return angleEncoder;
     }
 
-    public int getID() { return ID; }
+    public SparkEncoder getDriveEncoder() {
+        return driveEncoder;
+    }
+
+    public int getID() {
+        return ID;
+    }
 }

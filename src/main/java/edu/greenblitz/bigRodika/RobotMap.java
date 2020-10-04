@@ -44,11 +44,12 @@ public class RobotMap {
                     public static final int DRIVE_PORT = 1;
                     public static final int ID = 3;
                 }
-
             }
             public static class SwerveModule{
-                public static final GearDependentValue<Double> NORMALIZER = new GearDependentValue<>(28672.0,
+                public static final GearDependentValue<Double> NORMALIZER_SRX = new GearDependentValue<>(28672.0,
                         28672.0); //TODO: check what it does
+                public static final GearDependentValue<Double> NORMALIZER_SPARK = new GearDependentValue<>(2300.0 * 0.64,
+                        1234.0 / 2.0);
             }
         }
     }
