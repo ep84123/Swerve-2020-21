@@ -30,7 +30,7 @@ public class Chassis extends GBSubsystem {
                 RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID);
         swerveModules[backRight.getID()] = backRight;
 
-        gyroscope = new PigeonGyro(new PigeonIMU(0)); //TODO: ask google about PigeonIMU constructor
+        gyroscope = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.PIGEON_DEVICE_NUMBER)); //TODO: ask google about PigeonIMU constructor
         gyroscope.reset();
 //        gyroscope.inverse();
     }
