@@ -58,14 +58,54 @@ public class Chassis extends GBSubsystem {
 
     public void moveMotorsLimited(double[] powers, double[] angles) {
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setPower(powers[swerveModule.getID()]);
+            swerveModule.setDrivePower(powers[swerveModule.getID()]);
             swerveModule.setAngle(angles[swerveModule.getID()]);
         }
     }
 
     public void stopMotors(){
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setPower(0);
+            swerveModule.setDrivePower(0);
+        }
+    }
+
+    public void moveDriveMotors(double[] powers) throws MotorPowerOutOfRangeException {
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setDrivePower(powers[swerveModule.getID()]);
+        }
+    }
+
+    public void moveRotationMotors(double[] powers) throws MotorPowerOutOfRangeException {
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setRotationPower(powers[swerveModule.getID()]);
+        }
+    }
+
+    public void rotateWheelsBySpeedAcceleration(double[] speeds, double[] accelerations) throws MotorPowerOutOfRangeException {
+        double[] powers = new double[speeds.length];
+        for (int i = 0; i < speeds.length; i++){
+            powers[i] = speeds[i] * RobotMap.Limbo2.Chassis.ROTATION_KV + accelerations[i] * RobotMap.Limbo2.Chassis.ROTATION_KA;
+        }
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setRotationPower(powers[swerveModule.getID()]);
         }
     }
 
