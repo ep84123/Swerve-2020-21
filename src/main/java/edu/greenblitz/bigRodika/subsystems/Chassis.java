@@ -30,7 +30,7 @@ public class Chassis extends GBSubsystem {
                 RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID);
         swerveModules[backRight.getID()] = backRight;
 
-        gyro = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.PIGEON_DEVICE_NUMBER));
+        gyro = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.Pigeon.PIGEON_DEVICE_NUMBER));
         gyro.reset();
 //        gyroscope.inverse();
     }
@@ -48,7 +48,7 @@ public class Chassis extends GBSubsystem {
 
     public void moveMotors(double[] powers, double[] angles) throws MotorPowerOutOfRangeException {
         for (double power : powers){
-            if (power > 1 || power < -1){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
                 stopMotors();
                 throw new MotorPowerOutOfRangeException();
             }
@@ -58,14 +58,54 @@ public class Chassis extends GBSubsystem {
 
     public void moveMotorsLimited(double[] powers, double[] angles) {
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setPower(Math.max(Math.min(powers[swerveModule.getID()], 1), -1));
+            swerveModule.setDrivePower(powers[swerveModule.getID()]);
             swerveModule.setAngle(angles[swerveModule.getID()]);
         }
     }
 
     public void stopMotors(){
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setPower(0);
+            swerveModule.setDrivePower(0);
+        }
+    }
+
+    public void moveDriveMotors(double[] powers) throws MotorPowerOutOfRangeException {
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setDrivePower(powers[swerveModule.getID()]);
+        }
+    }
+
+    public void moveRotationMotors(double[] powers) throws MotorPowerOutOfRangeException {
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setRotationPower(powers[swerveModule.getID()]);
+        }
+    }
+
+    public void rotateWheelsBySpeedAcceleration(double[] speeds, double[] accelerations) throws MotorPowerOutOfRangeException {
+        double[] powers = new double[speeds.length];
+        for (int i = 0; i < speeds.length; i++){
+            powers[i] = speeds[i] * RobotMap.Limbo2.Chassis.ROTATION_KV + accelerations[i] * RobotMap.Limbo2.Chassis.ROTATION_KA;
+        }
+        for (double power : powers){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
+                stopMotors();
+                throw new MotorPowerOutOfRangeException();
+            }
+        }
+        for (SwerveModule swerveModule : swerveModules) {
+            swerveModule.setRotationPower(powers[swerveModule.getID()]);
         }
     }
 
@@ -118,7 +158,7 @@ public class Chassis extends GBSubsystem {
     }
 
     public double[] getWheelDistance() {
-        return new double[] {RobotMap.Limbo2.Chassis.WHEEL_DIST_WIDTH, RobotMap.Limbo2.Chassis.WHEEL_DIST_LENGTH};
+        return new double[] {RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_WIDTH, RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_LENGTH};
         // returning double array with distance between
     }
 

@@ -14,8 +14,8 @@ import java.util.List;
 public class OI {
     private static OI instance;
 
-    private SmartJoystick mainJoystick;
-    private SmartJoystick secondStick;
+    private final SmartJoystick mainJoystick;
+    private final SmartJoystick secondStick;
 
     private OI() {
         mainJoystick = new SmartJoystick(RobotMap.Limbo2.Joystick.MAIN,
