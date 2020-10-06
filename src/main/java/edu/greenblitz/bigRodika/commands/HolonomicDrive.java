@@ -8,8 +8,8 @@ import edu.greenblitz.gblib.hid.SmartJoystick;
 
 public class HolonomicDrive extends GBCommand {
 
-    private SmartJoystick joystick;
-    private Chassis chassis;
+    private final SmartJoystick joystick;
+    private final Chassis chassis;
     private final double POWER_CONST = 1.0;
     public HolonomicDrive(SmartJoystick joystick){
         this.joystick = joystick;
@@ -18,7 +18,7 @@ public class HolonomicDrive extends GBCommand {
 
     @Override
     public void initialize(){
-
+        chassis.toBrake();
     }
 
     @Override
@@ -33,4 +33,6 @@ public class HolonomicDrive extends GBCommand {
             e.printStackTrace();
         }
     }
+
+
 }
