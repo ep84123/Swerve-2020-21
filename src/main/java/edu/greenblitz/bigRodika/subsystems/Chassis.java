@@ -13,7 +13,7 @@ public class Chassis extends GBSubsystem {
 
     private final SwerveModule[] swerveModules = new SwerveModule[4];
 
-    private final IGyroscope gyroscope;
+    private final IGyroscope gyro;
 //    private PowerDistributionPanel robotPDP;
 
     private Chassis() {
@@ -30,8 +30,8 @@ public class Chassis extends GBSubsystem {
                 RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID);
         swerveModules[backRight.getID()] = backRight;
 
-        gyroscope = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.PIGEON_DEVICE_NUMBER)); //TODO: ask google about PigeonIMU constructor
-        gyroscope.reset();
+        gyro = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.PIGEON_DEVICE_NUMBER));
+        gyro.reset();
 //        gyroscope.inverse();
     }
 
@@ -102,19 +102,19 @@ public class Chassis extends GBSubsystem {
 //    public double getAngularVelocityByWheels() {}
 
     public double getAngle() {
-        return gyroscope.getNormalizedYaw();
+        return gyro.getNormalizedYaw();
     }
 
     public double getRawAngle() {
-        return gyroscope.getRawYaw();
+        return gyro.getRawYaw();
     }
 
     public double getAngularVelocityByGyro() {
-        return gyroscope.getYawRate();
+        return gyro.getYawRate();
     }
 
     public void resetGyro() {
-        gyroscope.reset();
+        gyro.reset();
     }
 
     public double[] getWheelDistance() {
