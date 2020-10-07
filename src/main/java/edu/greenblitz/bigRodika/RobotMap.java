@@ -20,11 +20,19 @@ public class RobotMap {
 
 
         public static class Chassis {
-            public static final double WHEEL_DIST_WIDTH = 0.622;
-            public static final double WHEEL_DIST_LENGTH = 1; //random number
-            public static final int PIGEON_DEVICE_NUMBER = 0; //random number
+
+            public static class Sizes {
+                public static final double WHEEL_DIST_WIDTH = 0.622;
+                public static final double WHEEL_DIST_LENGTH = 1; //random number
+            }
+
+            public static class Pigeon {
+                public static final int PIGEON_DEVICE_NUMBER = 0; //random number
+            }
 
             public static class Motor {
+                public static final double MOTOR_LIMITER = 1;
+
                 public static class FRONT_RIGHT {
                     public static final int ROTATE_PORT = 1;
                     public static final int DRIVE_PORT = 1;

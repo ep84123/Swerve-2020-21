@@ -13,7 +13,7 @@ public class Chassis extends GBSubsystem {
 
     private final SwerveModule[] swerveModules = new SwerveModule[4];
 
-    private final IGyroscope gyroscope;
+    private final IGyroscope gyro;
 //    private PowerDistributionPanel robotPDP;
 
     private Chassis() {
@@ -30,8 +30,8 @@ public class Chassis extends GBSubsystem {
                 RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.DRIVE_PORT, RobotMap.Limbo2.Chassis.Motor.BACK_RIGHT.ID);
         swerveModules[backRight.getID()] = backRight;
 
-        gyroscope = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.PIGEON_DEVICE_NUMBER)); //TODO: ask google about PigeonIMU constructor
-        gyroscope.reset();
+        gyro = new PigeonGyro(new PigeonIMU(RobotMap.Limbo2.Chassis.Pigeon.PIGEON_DEVICE_NUMBER));
+        gyro.reset();
 //        gyroscope.inverse();
     }
 
@@ -48,7 +48,7 @@ public class Chassis extends GBSubsystem {
 
     public void moveMotors(double[] powers, double[] angles) throws MotorPowerOutOfRangeException {
         for (double power : powers){
-            if (power > 1 || power < -1){
+            if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
                 stopMotors();
                 throw new MotorPowerOutOfRangeException();
             }
@@ -58,7 +58,7 @@ public class Chassis extends GBSubsystem {
 
     public void moveMotorsLimited(double[] powers, double[] angles) {
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setPower(Math.max(Math.min(powers[swerveModule.getID()], 1), -1));
+            swerveModule.setPower(powers[swerveModule.getID()]);
             swerveModule.setAngle(angles[swerveModule.getID()]);
         }
     }
@@ -102,23 +102,23 @@ public class Chassis extends GBSubsystem {
 //    public double getAngularVelocityByWheels() {}
 
     public double getAngle() {
-        return gyroscope.getNormalizedYaw();
+        return gyro.getNormalizedYaw();
     }
 
     public double getRawAngle() {
-        return gyroscope.getRawYaw();
+        return gyro.getRawYaw();
     }
 
     public double getAngularVelocityByGyro() {
-        return gyroscope.getYawRate();
+        return gyro.getYawRate();
     }
 
     public void resetGyro() {
-        gyroscope.reset();
+        gyro.reset();
     }
 
     public double[] getWheelDistance() {
-        return new double[] {RobotMap.Limbo2.Chassis.WHEEL_DIST_WIDTH, RobotMap.Limbo2.Chassis.WHEEL_DIST_LENGTH};
+        return new double[] {RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_WIDTH, RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_LENGTH};
         // returning double array with distance between
     }
 

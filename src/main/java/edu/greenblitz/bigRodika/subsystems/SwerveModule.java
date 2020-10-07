@@ -12,7 +12,7 @@ import edu.greenblitz.gblib.gears.GearDependentValue;
 
 public class SwerveModule extends GBSubsystem {
 
-    private final WPI_TalonSRX m_Angle;
+    private final WPI_TalonSRX m_Rotation;
     private final CANSparkMax m_Drive;
     private final IEncoder angleEncoder;
     private final SparkEncoder driveEncoder;
@@ -23,9 +23,9 @@ public class SwerveModule extends GBSubsystem {
         this.ID = ID;
         isDriverInverted = false;
         isRotatorInverted = false;
-        m_Angle = new WPI_TalonSRX(rotatePort);
-        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SRX, m_Angle);// again, values from past code
+        m_Rotation = new WPI_TalonSRX(rotatePort);
+        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
+        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SRX, m_Rotation);// again, values from past code
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
@@ -40,8 +40,8 @@ public class SwerveModule extends GBSubsystem {
         return ID;
     }
 
-    public WPI_TalonSRX getM_Angle() {
-        return m_Angle;
+    public WPI_TalonSRX getM_Rotation() {
+        return m_Rotation;
     }
 
     public CANSparkMax getM_Drive() {
@@ -86,7 +86,7 @@ public class SwerveModule extends GBSubsystem {
     }
 
     public void setAsFollowerOf(double portID){
-        m_Angle.set(ControlMode.Follower, portID);
+        m_Rotation.set(ControlMode.Follower, portID);
     }
 
     public void setPower(double power){
@@ -95,6 +95,6 @@ public class SwerveModule extends GBSubsystem {
 
     public void setAngle(double destDegrees){
         double destTicks = destDegrees * 1024/360;
-        m_Angle.set(ControlMode.Position, destTicks);
+        m_Rotation.set(ControlMode.Position, destTicks);
     }
 }
