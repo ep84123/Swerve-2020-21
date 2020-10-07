@@ -16,41 +16,28 @@ public class SwerveModule extends GBSubsystem {
     private final CANSparkMax m_Drive;
     private final IEncoder angleEncoder;
     private final SparkEncoder driveEncoder;
-    private final int ID;
+    private int ID;
+    private boolean isDriverInverted, isRotatorInverted;
 
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in init' should i just add theme to init?
         this.ID = ID;
+        isDriverInverted = false;
+        isRotatorInverted = false;
         m_Angle = new WPI_TalonSRX(rotatePort);
-        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
+        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
         angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SRX, m_Angle);// again, values from past code
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
-    public void setAngle(double destAngleDegs){
-        double destAngleTicks = degs2NormalizedTicks(destAngleDegs);
-        m_Angle.set(ControlMode.Position, destAngleTicks);
-    }
+    public int getTicks(){ return angleEncoder.getRawTicks();}
+    public int getNormalizedTicks(){ return getTicks()%1024; }
 
-    public void setAsFollowerOf(double portID){
-        m_Angle.set(ControlMode.Follower, portID);
-    }
+    public int getDegrees(){ return getTicks() * 360/1024;}
 
-    public void setPower(double power){
-        m_Drive.set(power);
-    }
+    public int getNormalizedDegrees(){return getNormalizedTicks() * 360/1024;}
 
-    public double getNormAngleRads() {
-        // I chose the numbers according to the values used in past code
-        return 2 * Math.PI * (angleEncoder.getNormalizedTicks() - 8974.0 / new GearDependentValue<>(28672.0,
-                28672.0).getValue());
-    }
-
-    public double getNormAngleDegs() {
-        return Math.toDegrees(getNormAngleRads());
-    }
-
-    public double degs2NormalizedTicks(double alpha){
-        return 2867.0*((Math.PI*alpha)/180.0) + 8974.0;
+    public int getID() {
+        return ID;
     }
 
     public WPI_TalonSRX getM_Angle() {
@@ -69,7 +56,45 @@ public class SwerveModule extends GBSubsystem {
         return driveEncoder;
     }
 
-    public int getID() {
-        return ID;
+    public double getLinVel(){
+        return driveEncoder.getNormalizedVelocity();
+    }
+
+    public double getAngVel(){
+        return angleEncoder.getNormalizedVelocity();
+    }
+    
+    public boolean isDriverInverted() {
+        return isDriverInverted;
+    }
+
+    public boolean isRotatorInverted() {
+        return isRotatorInverted;
+    }
+
+    public void totalInvert(){
+        isDriverInverted = true;
+        isRotatorInverted = true;
+    }
+
+    public void driverInvert(){
+        isDriverInverted = true;
+    }
+
+    public void rotatorInvert(){
+        isRotatorInverted = true;
+    }
+
+    public void setAsFollowerOf(double portID){
+        m_Angle.set(ControlMode.Follower, portID);
+    }
+
+    public void setPower(double power){
+        m_Drive.set(power);
+    }
+
+    public void setAngle(double destDegrees){
+        double destTicks = destDegrees * 1024/360;
+        m_Angle.set(ControlMode.Position, destTicks);
     }
 }
