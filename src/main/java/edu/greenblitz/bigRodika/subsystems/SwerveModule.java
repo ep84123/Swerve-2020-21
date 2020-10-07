@@ -35,12 +35,8 @@ public class SwerveModule extends GBSubsystem {
         m_Rotation.set(ControlMode.Follower, portID);
     }
 
-    public void setDrivePower(double power){
+    public void setPower(double power){
         m_Drive.set(power);
-    }
-
-    public void setRotationPower(double power){
-        m_Rotation.set(power);
     }
 
     public double getNormAngleRads() {
