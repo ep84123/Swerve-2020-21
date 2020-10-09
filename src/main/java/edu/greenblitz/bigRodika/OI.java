@@ -1,26 +1,17 @@
 package edu.greenblitz.bigRodika;
 
-import edu.greenblitz.bigRodika.subsystems.Chassis;
-import edu.greenblitz.gblib.command.GBCommand;
 import edu.greenblitz.gblib.hid.SmartJoystick;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-
-import java.util.ArrayList;
-
-import java.util.List;
 
 public class OI {
     private static OI instance;
 
     private final SmartJoystick mainJoystick;
-    private final SmartJoystick secondStick;
+    private final SmartJoystick secondJoyStick;
 
     private OI() {
         mainJoystick = new SmartJoystick(RobotMap.Limbo2.Joystick.MAIN,
                 RobotMap.Limbo2.Joystick.MAIN_DEADZONE);
-        secondStick = new SmartJoystick(RobotMap.Limbo2.Joystick.SIDE,
+        secondJoyStick = new SmartJoystick(RobotMap.Limbo2.Joystick.SIDE,
                 RobotMap.Limbo2.Joystick.SIDE_DEADZONE);
 
         initTestButtons();
@@ -47,7 +38,7 @@ public class OI {
         return mainJoystick;
     }
 
-    public SmartJoystick getSideStick() {
-        return secondStick;
+    public SmartJoystick getSideStick()  {
+        return secondJoyStick;
     }
 }

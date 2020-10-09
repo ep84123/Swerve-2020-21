@@ -23,15 +23,25 @@ public class HolonomicDrive extends GBCommand {
 
     @Override
     public void execute() {
-        double xVal = joystick.getAxisValue(SmartJoystick.Axis.RIGHT_X);
-        double yVAl = joystick.getAxisValue(SmartJoystick.Axis.RIGHT_Y);
-        double power = Math.sqrt(xVal*xVal + yVAl*yVAl);
-        double angle = Math.atan(yVAl/xVal);
+        double power = getLinearPower();
+        double angle = getDriveAngle();
         try {
             chassis.moveMotors(new double[]{power, power, power, power}, new double[]{angle, angle, angle, angle});
         } catch (MotorPowerOutOfRangeException e) {
             e.printStackTrace();
         }
+    }
+
+    public double getLinearPower(){
+        double xVal = joystick.getAxisValue(SmartJoystick.Axis.LEFT_X);
+        double yVAl = joystick.getAxisValue(SmartJoystick.Axis.LEFT_Y);
+        return Math.sqrt(xVal*xVal + yVAl*yVAl);
+    }
+
+    public double getDriveAngle(){
+        double xVal = joystick.getAxisValue(SmartJoystick.Axis.LEFT_X);
+        double yVAl = joystick.getAxisValue(SmartJoystick.Axis.LEFT_Y);
+        return Math.atan(yVAl/xVal);
     }
 
 }

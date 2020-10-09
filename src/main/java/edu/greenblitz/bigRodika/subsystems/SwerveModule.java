@@ -8,7 +8,6 @@ import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.gblib.encoder.IEncoder;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
 import edu.greenblitz.gblib.encoder.TalonEncoder;
-import edu.greenblitz.gblib.gears.GearDependentValue;
 
 public class SwerveModule extends GBSubsystem {
 
@@ -29,14 +28,6 @@ public class SwerveModule extends GBSubsystem {
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
-    public int getTicks(){ return angleEncoder.getRawTicks(); }
-
-    public int getNormalizedTicks(){ return getTicks()%1024; }
-
-    public int getDegrees(){ return getTicks() * 360/1024; }
-
-    public int getNormalizedDegrees(){return getNormalizedTicks() * 360/1024; }
-
     public void setAngle(double destDegrees){
         double destTicks = destDegrees * 1024/360;
         m_Rotation.set(ControlMode.Position, destTicks);
@@ -53,7 +44,36 @@ public class SwerveModule extends GBSubsystem {
     public void setAsFollowerOf(double portID){
         m_Rotation.set(ControlMode.Follower, portID);
     }
-    
+
+    public void totalInvert(){
+        isDriverInverted = true;
+        isRotatorInverted = true;
+    }
+
+    public void driverInvert(){
+        isDriverInverted = true;
+    }
+
+    public void rotatorInvert(){
+        isRotatorInverted = true;
+    }
+
+    public boolean isDriverInverted() {
+        return isDriverInverted;
+    }
+
+    public boolean isRotatorInverted() {
+        return isRotatorInverted;
+    }
+
+    public int getTicks(){ return angleEncoder.getRawTicks(); }
+
+    public int getNormalizedTicks(){ return getTicks()%1024; }
+
+    public int getDegrees(){ return getTicks() * 360/1024; }
+
+    public int getNormalizedDegrees(){return getNormalizedTicks() * 360/1024; }
+
     public double getLinVel(){
         return driveEncoder.getNormalizedVelocity();
     }
@@ -80,26 +100,5 @@ public class SwerveModule extends GBSubsystem {
 
     public int getID() {
         return ID;
-    }
-
-    public boolean isDriverInverted() {
-        return isDriverInverted;
-    }
-
-    public boolean isRotatorInverted() {
-        return isRotatorInverted;
-    }
-
-    public void totalInvert(){
-        isDriverInverted = true;
-        isRotatorInverted = true;
-    }
-
-    public void driverInvert(){
-        isDriverInverted = true;
-    }
-
-    public void rotatorInvert(){
-        isRotatorInverted = true;
     }
 }

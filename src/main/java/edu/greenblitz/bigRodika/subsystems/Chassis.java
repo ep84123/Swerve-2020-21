@@ -162,6 +162,10 @@ public class Chassis extends GBSubsystem {
         // returning double array with distance between
     }
 
+    public SwerveModule[] getSwerveModules(){
+        return swerveModules;
+    }
+
     @Override
     public void periodic() {
         super.periodic();
