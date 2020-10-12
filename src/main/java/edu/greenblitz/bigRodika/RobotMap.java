@@ -70,5 +70,10 @@ public class RobotMap {
                         1234.0 / 2.0);
             }
         }
+        public static class Measures{
+            public static final double LENGTH = 1.5;
+            public static final double WIDTH = 1;
+            public static final double WHEEL_DIST_FROM_CENTER = Math.sqrt((LENGTH*LENGTH) + (WIDTH*WIDTH));
+        }
     }
 }

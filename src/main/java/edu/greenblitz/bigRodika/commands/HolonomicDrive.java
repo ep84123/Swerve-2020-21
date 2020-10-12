@@ -6,6 +6,10 @@ import edu.greenblitz.bigRodika.subsystems.Chassis;
 import edu.greenblitz.gblib.command.GBCommand;
 import edu.greenblitz.gblib.hid.SmartJoystick;
 
+/**
+ * @quthor Orel
+ */
+
 public class HolonomicDrive extends GBCommand {
 
     private final SmartJoystick joystick;
