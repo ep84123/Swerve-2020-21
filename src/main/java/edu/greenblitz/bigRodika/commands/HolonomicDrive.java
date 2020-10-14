@@ -3,14 +3,13 @@ package edu.greenblitz.bigRodika.commands;
 import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.bigRodika.exceptions.MotorPowerOutOfRangeException;
 import edu.greenblitz.bigRodika.subsystems.Chassis;
-import edu.greenblitz.gblib.command.GBCommand;
 import edu.greenblitz.gblib.hid.SmartJoystick;
 
 /**
  * @author Orel
  */
 
-public class HolonomicDrive extends GBCommand {
+public class HolonomicDrive extends ChassisCommand {
 
     private final SmartJoystick joystick;
     private final Chassis chassis;

@@ -22,10 +22,19 @@ public class RobotMap {
         public static class Chassis {
 
             // TODO: 06/10/2020 check real values of all constants
-            public static final double DRIVE_KV = 1;
-            public static final double DRIVE_KA = 1;
-            public static final double ROTATION_KV = 1;
-            public static final double ROTATION_KA = 1;
+            public static class MiniCIM {
+                public static final double DRIVE_KV = 1;
+                public static final double DRIVE_KA = 1;
+                public static final double ROTATION_KV = 1;
+                public static final double ROTATION_KA = 1;
+            }
+
+            public static class Spark {
+                public static final double DRIVE_KV = 1;
+                public static final double DRIVE_KA = 1;
+                public static final double ROTATION_KV = 1;
+                public static final double ROTATION_KA = 1;
+            }
 
             public static final double MAX_LINEAR_VELOCITY = 3;
             public static final double MAX_ANGULAR_VELOCITY = 3;

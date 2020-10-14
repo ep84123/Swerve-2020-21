@@ -49,7 +49,7 @@ public class FullDrive extends GBCommand {
     public double getLinearVel(){
         double xVal = mainJoystick.getAxisValue(SmartJoystick.Axis.LEFT_X);
         double yVAl = mainJoystick.getAxisValue(SmartJoystick.Axis.LEFT_Y);
-        return Math.sqrt(xVal*xVal + yVAl*yVAl) * RobotMap.Limbo2.Chassis.MAX_LINEAR_VELOCITY;
+        return Math.sqrt(Math.pow(xVal, 2) + Math.pow(yVAl, 2)) * RobotMap.Limbo2.Chassis.MAX_LINEAR_VELOCITY;
     }
 
     public double getAngularVel(){

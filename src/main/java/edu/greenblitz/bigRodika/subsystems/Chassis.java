@@ -101,7 +101,7 @@ public class Chassis extends GBSubsystem {
     public void rotateWheelsBySpeedAcceleration(double[] speeds, double[] accelerations) throws MotorPowerOutOfRangeException {
         double[] powers = new double[speeds.length];
         for (int i = 0; i < speeds.length; i++){
-            powers[i] = speeds[i] * RobotMap.Limbo2.Chassis.ROTATION_KV + accelerations[i] * RobotMap.Limbo2.Chassis.ROTATION_KA;
+            powers[i] = speeds[i] * RobotMap.Limbo2.Chassis.MiniCIM.ROTATION_KV + accelerations[i] * RobotMap.Limbo2.Chassis.MiniCIM.ROTATION_KA;
         }
         for (double power : powers){
             if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
