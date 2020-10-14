@@ -30,11 +30,6 @@ public class RobotMap {
             public static final double MAX_LINEAR_VELOCITY = 3;
             public static final double MAX_ANGULAR_VELOCITY = 3;
 
-            public static class Sizes {
-                public static final double WHEEL_DIST_WIDTH = 0.622;
-                public static final double WHEEL_DIST_LENGTH = 1; //random number
-            }
-
             public static class Pigeon {
                 public static final int PIGEON_DEVICE_NUMBER = 0; //random number
             }
@@ -73,7 +68,7 @@ public class RobotMap {
         public static class Measures{
             public static final double LENGTH = 1.5;
             public static final double WIDTH = 1;
-            public static final double WHEEL_DIST_FROM_CENTER = Math.sqrt((LENGTH*LENGTH) + (WIDTH*WIDTH));
+            public static final double WHEEL_DIST_FROM_CENTER = Math.sqrt(Math.pow(LENGTH, 2) + Math.pow(WIDTH, 2));
         }
     }
 }

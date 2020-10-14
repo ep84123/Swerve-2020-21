@@ -7,6 +7,9 @@ import edu.greenblitz.bigRodika.exceptions.MotorPowerOutOfRangeException;
 import edu.greenblitz.gblib.gyroscope.IGyroscope;
 import edu.greenblitz.gblib.gyroscope.PigeonGyro;
 
+/**
+ * @author Itgil
+ */
 
 public class Chassis extends GBSubsystem {
     private static Chassis instance;
@@ -46,26 +49,22 @@ public class Chassis extends GBSubsystem {
         return instance;
     }
 
-    public void moveMotors(double[] powers, double[] angles) throws MotorPowerOutOfRangeException {
+    public void moveMotors(double[] powers, double[] angles, boolean fieldOriented) throws MotorPowerOutOfRangeException {
+        if (fieldOriented){
+            for (int i = 0; i < angles.length; i++){
+                // TODO: 14/10/2020 check clockwise = positive in gyro
+                angles[i] = angles[i] - getAngle();
+            }
+        }
         for (double power : powers){
             if (power > RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER || power < -RobotMap.Limbo2.Chassis.Motor.MOTOR_LIMITER){
                 stopMotors();
                 throw new MotorPowerOutOfRangeException();
             }
         }
-        moveMotorsLimited(powers, angles);
-    }
-
-    public void moveMotorsLimited(double[] powers, double[] angles) {
         for (SwerveModule swerveModule : swerveModules){
             swerveModule.setDrivePower(powers[swerveModule.getID()]);
             swerveModule.setAngle(angles[swerveModule.getID()]);
-        }
-    }
-
-    public void stopMotors(){
-        for (SwerveModule swerveModule : swerveModules){
-            swerveModule.setDrivePower(0);
         }
     }
 
@@ -90,6 +89,12 @@ public class Chassis extends GBSubsystem {
         }
         for (SwerveModule swerveModule : swerveModules) {
             swerveModule.setRotationPower(powers[swerveModule.getID()]);
+        }
+    }
+
+    public void stopMotors(){
+        for (SwerveModule swerveModule : swerveModules){
+            swerveModule.setDrivePower(0);
         }
     }
 
@@ -124,7 +129,7 @@ public class Chassis extends GBSubsystem {
     public void arcadeDrive(double power, double rotate) throws MotorPowerOutOfRangeException {
         double[] powers = {power + rotate, power - rotate, power - rotate, power + rotate};
         double[] angles = {0, 0, 0, 0};
-        moveMotors(powers, angles);
+        moveMotors(powers, angles, true);
     }
 
     public double[] getMeters() {
@@ -155,11 +160,6 @@ public class Chassis extends GBSubsystem {
 
     public void resetGyro() {
         gyro.reset();
-    }
-
-    public double[] getWheelDistance() {
-        return new double[] {RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_WIDTH, RobotMap.Limbo2.Chassis.Sizes.WHEEL_DIST_LENGTH};
-        // returning double array with distance between
     }
 
     public SwerveModule[] getSwerveModules(){

@@ -4,8 +4,13 @@ import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.bigRodika.exceptions.MotorPowerOutOfRangeException;
 import edu.greenblitz.bigRodika.subsystems.Chassis;
 import edu.greenblitz.bigRodika.subsystems.SwerveModule;
+import edu.greenblitz.bigRodika.commands.ArcDrive;
 import edu.greenblitz.gblib.command.GBCommand;
 import edu.greenblitz.gblib.hid.SmartJoystick;
+
+/**
+ * @author Itgil
+ */
 
 public class FullDrive extends GBCommand {
     private final SmartJoystick mainJoystick;
@@ -29,13 +34,13 @@ public class FullDrive extends GBCommand {
         double angle = getDriveAngle();
 
         double rotationPower = getRotationPower(angularVelocity);
+        double[] rotationPowers = {rotationPower, rotationPower, rotationPower, rotationPower};
+        double[] drivePowers = ArcDrive.arcPowers(linearVelocity, angularVelocity, angle); // wrong, arcPowers doesn't return powers
 
         try {
-            for (SwerveModule swerveModule : chassis.getSwerveModules()){
-                swerveModule.setAngle(angle);
-            }
-            chassis.moveRotationMotors(new double[]{rotationPower, rotationPower, rotationPower, rotationPower});
-            orelMethod(linearVelocity, angularVelocity);
+            chassis.moveMotors(new double[]{0, 0, 0, 0}, new double[]{angle, angle, angle, angle}, true);
+            chassis.moveRotationMotors(rotationPowers);
+            chassis.moveDriveMotors(drivePowers);
         } catch (MotorPowerOutOfRangeException e) {
             e.printStackTrace();
         }
@@ -60,9 +65,5 @@ public class FullDrive extends GBCommand {
 
     public double getRotationPower(double angularVel){
         return angularVel * RobotMap.Limbo2.Chassis.MAX_ANGULAR_VELOCITY;
-    }
-
-    public void orelMethod(double linearVel, double angularVel){
-        
     }
 }
