@@ -1,6 +1,6 @@
 package edu.greenblitz.bigRodika.utils;
 
-public class ADHD {
+public class DirectionHandler {
     /***
      * @author Orel
      * @param robotVel - the current velocity of the robot
