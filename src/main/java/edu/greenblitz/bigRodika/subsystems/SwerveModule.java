@@ -13,7 +13,6 @@ public class SwerveModule extends GBSubsystem {
 
     private final WPI_TalonSRX m_Rotation;
     private final CANSparkMax m_Drive;
-    private final IEncoder angleEncoder;
     private final SparkEncoder driveEncoder;
     private final int ID;
     private boolean isDriverInverted, isRotatorInverted;
@@ -24,7 +23,6 @@ public class SwerveModule extends GBSubsystem {
         this.isRotatorInverted = false;
         m_Rotation = new WPI_TalonSRX(rotatePort);
         m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
-        angleEncoder = new TalonEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SRX, m_Rotation);// again, values from past code
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
@@ -66,7 +64,7 @@ public class SwerveModule extends GBSubsystem {
         return isRotatorInverted;
     }
 
-    public int getTicks(){ return angleEncoder.getRawTicks(); }
+    public int getTicks(){ return m_Rotation.getSensorCollection().getAnalogIn(); }
 
     public int getNormalizedTicks(){ return getTicks()%1024; }
 
@@ -79,7 +77,11 @@ public class SwerveModule extends GBSubsystem {
     }
 
     public double getAngVel(){
-        return angleEncoder.getNormalizedVelocity();
+        return m_Rotation.getSensorCollection().getAnalogInVel();
+    }
+
+    public double getNormalizedAngVel(){
+        return getAngVel() * 20 * Math.PI/1024;
     }
 
     public WPI_TalonSRX getM_Rotation() {
@@ -88,10 +90,6 @@ public class SwerveModule extends GBSubsystem {
 
     public CANSparkMax getM_Drive() {
         return m_Drive;
-    }
-
-    public IEncoder getAngleEncoder() {
-        return angleEncoder;
     }
 
     public SparkEncoder getDriveEncoder() {

@@ -15,15 +15,9 @@ public class DirectionHandler {
     private static double maxRatio = 0.5; // if the robot is over this*100% vel it will turn th wheels regularly
     public static boolean goOtherDirection(double robotVel, double maxVel, double currAngle, double destAngle){
         double delta = destAngle - currAngle;
-        if(delta == 0){
-            return Boolean.parseBoolean(null);
-        }
-        else if(currAngle/maxVel > maxRatio){
+        if(delta == 0 || currAngle/maxVel > maxRatio){
             return false;
         }
-        else if((delta <= 180 && delta >= 0) || (delta <= -180 && delta >= -360)){
-            return false;
-        }
-        return true;
+        else return (!(delta <= 180) || !(delta >= 0)) && (!(delta <= -180) || !(delta >= -360));
     }
 }
