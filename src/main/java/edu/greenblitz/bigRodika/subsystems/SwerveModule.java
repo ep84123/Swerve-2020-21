@@ -1,13 +1,12 @@
 package edu.greenblitz.bigRodika.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
-import edu.greenblitz.gblib.encoder.IEncoder;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
-import edu.greenblitz.gblib.encoder.TalonEncoder;
 
 public class SwerveModule extends GBSubsystem {
 
@@ -64,7 +63,7 @@ public class SwerveModule extends GBSubsystem {
         return isRotatorInverted;
     }
 
-    public int getTicks(){ return m_Rotation.getSensorCollection().getAnalogIn(); }
+    public int getTicks(){ return getRotationEncoder().getAnalogIn(); }
 
     public int getNormalizedTicks(){ return getTicks()%1024; }
 
@@ -73,11 +72,11 @@ public class SwerveModule extends GBSubsystem {
     public int getNormalizedDegrees(){return getNormalizedTicks() * 360/1024; }
 
     public double getLinVel(){
-        return driveEncoder.getNormalizedVelocity();
+        return getDriveEncoder().getNormalizedVelocity();
     }
 
     public double getAngVel(){
-        return m_Rotation.getSensorCollection().getAnalogInVel();
+        return getRotationEncoder().getAnalogInVel();
     }
 
     public double getNormalizedAngVel(){
@@ -90,6 +89,10 @@ public class SwerveModule extends GBSubsystem {
 
     public CANSparkMax getM_Drive() {
         return m_Drive;
+    }
+
+    public SensorCollection getRotationEncoder(){
+        return getM_Rotation().getSensorCollection();
     }
 
     public SparkEncoder getDriveEncoder() {

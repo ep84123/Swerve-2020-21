@@ -173,7 +173,7 @@ public class Chassis extends GBSubsystem {
 
     public void resetEncoders() {
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.getAngleEncoder().reset();
+            swerveModule.getRotationEncoder().setAnalogPosition(0, 0);
         }
     }
 
