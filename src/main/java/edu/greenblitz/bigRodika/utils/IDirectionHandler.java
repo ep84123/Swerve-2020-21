@@ -1,5 +1,5 @@
 package edu.greenblitz.bigRodika.utils;
 
-public interface IDriveHandler {
-    boolean shouldGoBackwards(double linVel, double angle, double driverInput);
+public interface IDirectionHandler {
+    boolean shouldGoInverted(double angle, double linVel, double driverInput);
 }
