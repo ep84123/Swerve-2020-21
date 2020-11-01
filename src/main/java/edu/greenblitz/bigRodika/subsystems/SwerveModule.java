@@ -1,6 +1,7 @@
 package edu.greenblitz.bigRodika.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -64,7 +65,7 @@ public class SwerveModule extends GBSubsystem {
         return isRotatorInverted;
     }
 
-    public int getTicks(){ return m_Rotation.getSensorCollection().getAnalogIn(); }
+    public int getTicks(){ return getAngleEncoder().getAnalogIn(); }
 
     public int getNormalizedTicks(){ return getTicks()%1024; }
 
@@ -77,7 +78,7 @@ public class SwerveModule extends GBSubsystem {
     }
 
     public double getAngVel(){
-        return m_Rotation.getSensorCollection().getAnalogInVel();
+        return getAngleEncoder().getAnalogInVel();
     }
 
     public double getNormalizedAngVel(){
@@ -90,6 +91,10 @@ public class SwerveModule extends GBSubsystem {
 
     public CANSparkMax getM_Drive() {
         return m_Drive;
+    }
+
+    public SensorCollection getAngleEncoder(){
+        return getM_Rotation().getSensorCollection();
     }
 
     public SparkEncoder getDriveEncoder() {
