@@ -173,6 +173,10 @@ public class Chassis extends GBSubsystem {
         putString("Module 1", swerveModules[1].toString());
         putString("Module 2", swerveModules[2].toString());
         putString("Module 3", swerveModules[3].toString());
+        putNumber("Gyro Rate", gyro.getYawRate()    );
+        putNumber("Raw Gyro", gyro.getRawYaw());
+        putNumber("Normalized Gyro", gyro.getNormalizedYaw());
+
     }
 
     public void resetEncoders() {
