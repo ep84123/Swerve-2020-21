@@ -169,6 +169,10 @@ public class Chassis extends GBSubsystem {
     @Override
     public void periodic() {
         super.periodic();
+        putString("Module 0", swerveModules[0].toString());
+        putString("Module 1", swerveModules[1].toString());
+        putString("Module 2", swerveModules[2].toString());
+        putString("Module 3", swerveModules[3].toString());
     }
 
     public void resetEncoders() {

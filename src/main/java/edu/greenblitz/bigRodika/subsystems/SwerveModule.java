@@ -104,4 +104,15 @@ public class SwerveModule extends GBSubsystem {
     public int getID() {
         return ID;
     }
+
+    @Override
+    public String toString() {
+        return "SwerveModule{" +
+                "ID=" + ID +
+                "\nDrive Raw Ticks = " + getDriveEncoder().getRawTicks() +
+                "\nRotation Raw Ticks = " + getAngleEncoder().getAnalogInRaw() +
+                "\nisDriverInverted=" + isDriverInverted +
+                "\nisRotatorInverted=" + isRotatorInverted +
+                "\n}";
+    }
 }
