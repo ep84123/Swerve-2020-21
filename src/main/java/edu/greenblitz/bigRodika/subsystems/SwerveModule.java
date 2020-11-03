@@ -110,6 +110,7 @@ public class SwerveModule extends GBSubsystem {
         return "SwerveModule{" +
                 "ID=" + ID +
                 "\nDrive Raw Ticks = " + getDriveEncoder().getRawTicks() +
+                "\nRotation In Ticks = " + getAngleEncoder().getAnalogIn() +
                 "\nRotation Raw Ticks = " + getAngleEncoder().getAnalogInRaw() +
                 "\nisDriverInverted=" + isDriverInverted +
                 "\nisRotatorInverted=" + isRotatorInverted +
