@@ -8,5 +8,5 @@ public interface IDirectionHandler {
      * @param driverInput - how much the driver wanted to be corrected by the function (a number between 0 to 1 if not mentioned otherwise)
      * @return  - if the robot should go inverted
      */
-    boolean shouldGoInverted(double angle, double linVel, double driverInput);
+    boolean shouldGoInverted(double angle, double linVel, double driverInput, double ... args);
 }
