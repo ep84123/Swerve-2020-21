@@ -132,12 +132,12 @@ public class Chassis extends GBSubsystem {
         moveMotors(powers, angles, true);
     }
 
-    public double[] getMeters() {
+    public double[] getDriveMeters() {
         return new double[]{swerveModules[0].getDriveEncoder().getNormalizedTicks(), swerveModules[1].getDriveEncoder().getNormalizedTicks(),
                 swerveModules[2].getDriveEncoder().getNormalizedTicks(), swerveModules[3].getDriveEncoder().getNormalizedTicks()};
     }
 
-    public double[] getRates() {
+    public double[] getDriveVelocities() {
         return new double[]{swerveModules[0].getDriveEncoder().getNormalizedVelocity(), swerveModules[1].getDriveEncoder().getNormalizedVelocity(),
                 swerveModules[2].getDriveEncoder().getNormalizedVelocity(), swerveModules[3].getDriveEncoder().getNormalizedVelocity()};
     }
@@ -173,7 +173,7 @@ public class Chassis extends GBSubsystem {
 
     public void resetEncoders() {
         for (SwerveModule swerveModule : swerveModules){
-            swerveModule.getAngleEncoder().reset();
+            swerveModule.getRotationEncoder().setAnalogPosition(0, 0);
         }
     }
 
