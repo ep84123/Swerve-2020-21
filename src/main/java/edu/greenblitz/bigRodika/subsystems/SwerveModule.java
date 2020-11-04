@@ -63,24 +63,35 @@ public class SwerveModule extends GBSubsystem {
         return isRotatorInverted;
     }
 
-    public int getTicks(){ return getRotationEncoder().getAnalogIn(); }
+    public int getRotationTicks(){ return getRotationEncoder().getAnalogIn(); }
 
-    public int getNormalizedTicks(){ return getTicks()%1024; }
+    public int getRotationNormalizedTicks(){ return getRotationTicks()%1024; }
 
-    public int getDegrees(){ return getTicks() * 360/1024; }
+    public int getRotationDegrees(){ return getRotationTicks() * 360/1024; }
 
-    public int getNormalizedDegrees(){return getNormalizedTicks() * 360/1024; }
+    public int getNormalizedRotationDegrees(){return getRotationNormalizedTicks() * 360/1024; }
 
-    public double getLinVel(){
+    public double getDriveVel(){
         return getDriveEncoder().getNormalizedVelocity();
     }
 
-    public double getAngVel(){
+    /**
+     *
+     * @return velocity in units per 0.1 sec
+     */
+
+    public double getRotationVel(){
         return getRotationEncoder().getAnalogInVel();
     }
 
-    public double getNormalizedAngVel(){
-        return getAngVel() * 20 * Math.PI/1024;
+
+    /**
+     *
+     * @return velocity in rads per sec
+     */
+
+    public double getNormalizedRotationVel(){
+        return getRotationVel() * 20 * Math.PI/1024;
     }
 
     public WPI_TalonSRX getM_Rotation() {
