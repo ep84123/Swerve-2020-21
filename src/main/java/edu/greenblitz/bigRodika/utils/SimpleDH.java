@@ -18,18 +18,18 @@ public class SimpleDH implements IDirectionHandler{
      * @return
      */
     @Override
-    public boolean shouldGoInverted(double angle, double linVel, double ... args) {
+    public boolean handle(double angle, double linVel, double ... args) {
         double driverInput = args[0]*DRIVER_INPUT_SCALE; //rescaling driver input to the scale we want
         double pow = args[1]; // adding options for the user by making the power to raise the angle
         double val = ftv(angle, linVel, driverInput, pow);
-        return val < 0; // if the value is negative we want to drive inverted
+        return val < 0 && linVel < 0; // if the value is negative we want to drive inverted
     }
 
     /**
      * Wrapper for the other shouldGoInverted method that takes less parameters
      */
-    public boolean shouldGoInverted(double angle, double linVel, double driverInput){
-        return shouldGoInverted( angle,  linVel, new double[]{driverInput, DEFAULT_POW});
+    public boolean handle(double angle, double linVel, double driverInput){
+        return handle( angle,  linVel, new double[]{driverInput, DEFAULT_POW});
     }
 
     /**
@@ -41,7 +41,7 @@ public class SimpleDH implements IDirectionHandler{
      * @return
      */
     public static double ftv(double t, double v, double a, double p ){
-        return Math.signum(180 - 2*t) * (Math.pow(Math.abs(t-90), p )) + a*v;
+        return Math.signum(180 - 2*t) * (Math.pow(Math.abs(t-90), p )) + a*Math.abs(v);
     }
 
 }

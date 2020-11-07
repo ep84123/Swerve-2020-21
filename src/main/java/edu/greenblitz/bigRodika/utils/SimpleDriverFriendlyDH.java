@@ -18,8 +18,8 @@ public class SimpleDriverFriendlyDH extends SimpleDH {
      * @return
      */
     @Override
-    public boolean shouldGoInverted(double angle, double linVel, double... args) {
-        return super.shouldGoInverted(angle, linVel, new double[]{a(args[0], args[1]), args[1]});
+    public boolean handle(double angle, double linVel, double... args) {
+        return super.handle(angle, linVel, new double[]{a(args[0], args[1]), args[1]});
     }
 
     /**

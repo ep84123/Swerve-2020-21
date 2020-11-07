@@ -142,6 +142,16 @@ public class Chassis extends GBSubsystem {
                 swerveModules[2].getDriveEncoder().getNormalizedVelocity(), swerveModules[3].getDriveEncoder().getNormalizedVelocity()};
     }
 
+    /*
+    TODO: for itgil
+        make it work
+        bcs of peleg \w radians (-_-)
+     */
+    public double[] getRotateRadians(){
+        return new double[] {1.0,1.0,1.0,1.0};
+    }
+
+
 // TODO: 04/10/2020
 //    public double getLinearVelocity() {}
 //    public double getAngularVelocityByWheels() {}
