@@ -11,7 +11,7 @@ public class SimpleDriverFriendlyDH extends SimpleDH {
     /**
      * takes the driver input as an angle and not as number in some random scale
      * @param angle - the angle of the robot in degrees as long as not mentioned otherwise
-     * @param linVel - the linear velocity of the robobt
+     * @param linVel - the linear velocity of the robot
      * @param args - additional arguments
      *             args[0] - driver input, the angle that in max vel the DH will correct him in degrees and between 90 and 180
      *             args[1] - the wanted pow for the function

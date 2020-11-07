@@ -13,7 +13,7 @@ public class SimpleDH implements IDirectionHandler{
     /**
      * Uses a mathematical function to decide what to do
      * @param angle - the angle of the robot in degrees as long as not mentioned otherwise
-     * @param linVel - the linear velocity of the robobt
+     * @param linVel - the linear velocity of the robot
      * @param args - the 1st arg in args is the wanted pow
      * @return
      */
@@ -22,7 +22,7 @@ public class SimpleDH implements IDirectionHandler{
         double driverInput = args[0]*DRIVER_INPUT_SCALE; //rescaling driver input to the scale we want
         double pow = args[1]; // adding options for the user by making the power to raise the angle
         double val = ftv(angle, linVel, driverInput, pow);
-        return val < 0 && linVel < 0; // if the value is negative we want to drive inverted
+        return val <= 0 && linVel < 0; // if the value is negative we want to drive inverted
     }
 
     /**
