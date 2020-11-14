@@ -5,7 +5,7 @@ package edu.greenblitz.bigRodika.utils;
  * @brain Peleg, Itgil, Orel
  */
 
-public class SimpleDH implements IDirectionHandler{
+public class SimpleDH extends AbstractDH{
 
     private final double DRIVER_INPUT_SCALE = 320;
     private double driverInput;
