@@ -1,5 +1,6 @@
 package edu.greenblitz.bigRodika.utils;
 
+<<<<<<< HEAD
 public class DirectionHandler<T extends AbstractDH> {
 
     private T dh;
@@ -16,7 +17,7 @@ public class DirectionHandler<T extends AbstractDH> {
         but it doesn't matter for the calculation so I converted it to its right equivalent.
          */
         boolean ret = dh.handle(linPairedAngle, linVel);
-
+        
         return ret ? angle : 180 - angle;
     }
 
