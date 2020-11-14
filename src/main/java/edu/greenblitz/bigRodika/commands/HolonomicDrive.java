@@ -1,7 +1,9 @@
 package edu.greenblitz.bigRodika.commands;
 
+import edu.greenblitz.bigRodika.Basics.Pair;
 import edu.greenblitz.bigRodika.exceptions.MotorPowerOutOfRangeException;
 import edu.greenblitz.bigRodika.subsystems.Chassis;
+import edu.greenblitz.bigRodika.utils.DirectionHandler;
 import edu.greenblitz.bigRodika.utils.DumbDH;
 import edu.greenblitz.gblib.hid.SmartJoystick;
 
@@ -15,7 +17,7 @@ public class HolonomicDrive extends ChassisCommand {
     private final Chassis chassis;
     private final double POWER_CONST = 1.0;
     private boolean fieldOriented = true;
-    private DumbDH DH = new DumbDH();
+    private DirectionHandler<DumbDH> dh = new DirectionHandler<>(new DumbDH());
 
     public HolonomicDrive(SmartJoystick joystick){
         this.joystick = joystick;
@@ -34,9 +36,9 @@ public class HolonomicDrive extends ChassisCommand {
         double power = getLinearPower(xVal, yVal);
         double angle = getDriveAngle(xVal, yVal);
         //Assuming the encoders give the velocity in m/s and the angle in radians (yuck radians)
-        boolean b = DH.handle(chassis.getRotateRadians()[0],
-                chassis.getDriveVelocities()[0]);
-        power *= DHBool2Int(b, power);
+        Pair<Boolean, Double> decision = dh.handle(angle, Chassis.getInstance().getDriveVelocities()[0]);
+        power = decision.getFirst() && power > 0 ? power : -power;
+        angle = decision.getSecond();
         try {
             chassis.moveMotors(new double[]{power, power, power, power}, new double[]{angle, angle, angle, angle}, fieldOriented);
         } catch (MotorPowerOutOfRangeException e) {
