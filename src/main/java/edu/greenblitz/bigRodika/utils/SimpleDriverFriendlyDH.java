@@ -6,9 +6,7 @@ package edu.greenblitz.bigRodika.utils;
 
 public class SimpleDriverFriendlyDH extends SimpleDH {
 
-    private final double MAX_LIN_VEL = 5; //FixMe: This is not a measured value!
-
-
+    private final double MAX_LIN_VEL = 5; /*FixMe: the max speed isn't measured yet*/
 
     public SimpleDriverFriendlyDH(double driverInput, double pow) { //Ctor that gets all params
         super(driverInput, pow);
