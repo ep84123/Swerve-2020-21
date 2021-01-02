@@ -16,7 +16,7 @@ public class SwerveModule extends GBSubsystem {
     private final int ID;
     private boolean isDriverInverted, isRotatorInverted;
 
-    SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in init' should i just add theme to init?
+    SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this.ID = ID;
         this.isDriverInverted = false;
         this.isRotatorInverted = false;
@@ -42,16 +42,18 @@ public class SwerveModule extends GBSubsystem {
         m_Rotation.set(ControlMode.Follower, portID);
     }
 
-    public void totalInvert(){
-        isDriverInverted = true;
-        isRotatorInverted = true;
+    public void totalInvert(boolean driveInvert, boolean rotateInvert){
+        this.driverInvert(driveInvert);
+        this.rotatorInvert(rotateInvert);
     }
 
-    public void driverInvert(){
+    public void driverInvert(boolean invert){
+        m_Drive.setInverted(invert);
         isDriverInverted = true;
     }
 
-    public void rotatorInvert(){
+    public void rotatorInvert(boolean invert){
+        m_Rotation.setInverted(invert);
         isRotatorInverted = true;
     }
 
