@@ -10,6 +10,14 @@ public class DirectionHandler<T extends AbstractDH> {
         dh = newT;
     }
 
+    /**
+     *
+     * @param angle - the angle of the robot
+     * @param linVel - the linear velocity of the robobt
+     * @return
+     *      boolean - power or negative power
+     *      double - the new angle
+     */
     public Pair<Boolean, Double> handle(double angle, double linVel) {
         if (angle == 0) return new Pair(true, 0.0) ;
         double linPairedAngle = angle > 0 ? angle : 180 + angle;
