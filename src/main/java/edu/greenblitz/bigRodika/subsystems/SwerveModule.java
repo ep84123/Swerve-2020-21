@@ -18,7 +18,12 @@ public class SwerveModule extends GBSubsystem {
     private boolean isDriverInverted, isRotatorInverted;
     private PIDObject rotatePID;
 
-
+    /**
+     * SwerveModule Ctor without PID (default PID is 0 0 0 0)
+     * @param rotatePort - port of the rotate motor
+     * @param drivePort - port of the drive motor
+     * @param ID - ID of the module (used in chassis)
+     */
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this.ID = ID;
         this.isDriverInverted = false;
@@ -29,6 +34,13 @@ public class SwerveModule extends GBSubsystem {
         rotatePID = new PIDObject(0.0,0.0,0.0,0.0);
     }
 
+    /**
+     * SwerveModule Ctor without PID (default PID is 0 0 0 0)
+     * @param rotatePort - port of the rotate motor
+     * @param drivePort - port of the drive motor
+     * @param ID - ID of the module (used in chassis)
+     * @param rotatePID - PID for rotation
+     */
     SwerveModule(int rotatePort, int drivePort, int ID, PIDObject rotatePID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this.ID = ID;
         this.isDriverInverted = false;
@@ -39,19 +51,35 @@ public class SwerveModule extends GBSubsystem {
         this.rotatePID = rotatePID;
     }
 
-    public void setAngle(double destRads){ //Assuming: angle in radians
+    /**
+     *
+     * @param destRads - the destiny angle in radians
+     */
+    public void setAngle(double destRads){
         double destTicks = destRads * 1024/(2 * Math.PI);
         m_Rotation.set(ControlMode.Position, destTicks);
     }
 
+    /**
+     *
+     * @param power - power to give to the motor between -1 and 1
+     */
     public void setDrivePower(double power){
         m_Drive.set(power);
     }
 
+    /**
+     *
+     * @param power - power to give to the motor between -1 and 1
+     */
     public void setRotationPower(double power){
         m_Rotation.set(power);
     }
 
+    /**
+     *
+     * @param portID - the port of the module to follow
+     */
     public void setAsFollowerOf(double portID){
         m_Rotation.set(ControlMode.Follower, portID);
     }
@@ -92,7 +120,7 @@ public class SwerveModule extends GBSubsystem {
     }
 
     /**
-     *
+     * Itgil wrote this complains to him
      * @return velocity in units per 0.1 sec
      */
     public double getRotationVel(){
@@ -101,7 +129,7 @@ public class SwerveModule extends GBSubsystem {
 
 
     /**
-     *
+     * Itgil wrote this complains to him
      * @return velocity in rads per sec
      */
     public double getNormalizedRotationVel(){
