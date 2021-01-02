@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
+import org.greenblitz.motion.pid.PIDObject;
 
 public class SwerveModule extends GBSubsystem {
 
@@ -15,6 +16,8 @@ public class SwerveModule extends GBSubsystem {
     private final SparkEncoder driveEncoder;
     private final int ID;
     private boolean isDriverInverted, isRotatorInverted;
+    private PIDObject rotatePID;
+
 
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this.ID = ID;
@@ -23,6 +26,17 @@ public class SwerveModule extends GBSubsystem {
         m_Rotation = new WPI_TalonSRX(rotatePort);
         m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
+        rotatePID = new PIDObject(0.0,0.0,0.0,0.0);
+    }
+
+    SwerveModule(int rotatePort, int drivePort, int ID, PIDObject rotatePID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
+        this.ID = ID;
+        this.isDriverInverted = false;
+        this.isRotatorInverted = false;
+        m_Rotation = new WPI_TalonSRX(rotatePort);
+        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
+        driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
+        this.rotatePID = rotatePID;
     }
 
     public void setAngle(double destRads){ //Assuming: angle in radians
