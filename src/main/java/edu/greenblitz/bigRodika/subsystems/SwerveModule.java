@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
-import edu.wpi.first.wpilibj.CAN;
 import org.greenblitz.motion.pid.PIDObject;
 
 public class SwerveModule extends GBSubsystem {
@@ -17,7 +16,7 @@ public class SwerveModule extends GBSubsystem {
     private final CANSparkMax m_Drive;
     private final SparkEncoder driveEncoder;
     private final int ID;
-    private boolean isDriverInverted, isRotatorInverted;
+    private boolean driveInverted = false, rotateInverted = false;
     private PIDObject rotatePID;
     private static int rotatePIDSlot = 0, rotatePIDIdx = 0;
     private static int timeoutMs = 20;
@@ -30,8 +29,8 @@ public class SwerveModule extends GBSubsystem {
      */
     SwerveModule(int rotatePort, int drivePort, int ID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this.ID = ID;
-        this.isDriverInverted = false;
-        this.isRotatorInverted = false;
+        this.driveInverted = false;
+        this.rotateInverted = false;
         m_Rotation = new WPI_TalonSRX(rotatePort);
         m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
@@ -90,19 +89,19 @@ public class SwerveModule extends GBSubsystem {
         followDrive(driveLeader);
     }
 
-    public void totalInvert(boolean driveInvert, boolean rotateInvert){
-        this.driverInvert(driveInvert);
-        this.rotatorInvert(rotateInvert);
+    public void totalInvert(){
+        this.driveInvert();
+        this.rotateInvert();
     }
 
-    public void driverInvert(boolean invert){
-        m_Drive.setInverted(invert);
-        isDriverInverted = invert;
+    public void driveInvert(){
+        driveInverted = !driveInverted;
+        m_Drive.setInverted(driveInverted);
     }
 
-    public void rotatorInvert(boolean invert){
-        m_Rotation.setInverted(invert);
-        isRotatorInverted = invert;
+    public void rotateInvert(){
+        rotateInverted = !rotateInverted;
+        m_Rotation.setInverted(rotateInverted);
     }
 
     public void setRotatePID(PIDObject pid){
@@ -114,11 +113,11 @@ public class SwerveModule extends GBSubsystem {
     }
 
     public boolean isDriverInverted() {
-        return isDriverInverted;
+        return driveInverted;
     }
 
-    public boolean isRotatorInverted() {
-        return isRotatorInverted;
+    public boolean isRotateInverted() {
+        return rotateInverted;
     }
 
     public int getRotationTicks(){ return getRotationEncoder().getAnalogIn(); }
@@ -171,5 +170,13 @@ public class SwerveModule extends GBSubsystem {
 
     public PIDObject getRotatePID(){
         return this.rotatePID;
+    }
+
+    /**
+     * set the sensor phase (to true) if the sensor's positive direction does not correspond with the motor's positive direction
+     * @param phase
+     */
+    public void setRotationSensorPhase(boolean phase){
+        m_Rotation.setSensorPhase(phase);
     }
 }
