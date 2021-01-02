@@ -25,8 +25,8 @@ public class SwerveModule extends GBSubsystem {
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
     }
 
-    public void setAngle(double destDegrees){
-        double destTicks = destDegrees * 1024/360;
+    public void setAngle(double destRads){ //Assuming: angle in radians
+        double destTicks = destRads * 1024/(2 * Math.PI);
         m_Rotation.set(ControlMode.Position, destTicks);
     }
 
@@ -49,12 +49,12 @@ public class SwerveModule extends GBSubsystem {
 
     public void driverInvert(boolean invert){
         m_Drive.setInverted(invert);
-        isDriverInverted = true;
+        isDriverInverted = invert;
     }
 
     public void rotatorInvert(boolean invert){
         m_Rotation.setInverted(invert);
-        isRotatorInverted = true;
+        isRotatorInverted = invert;
     }
 
     public boolean isDriverInverted() {
@@ -69,9 +69,9 @@ public class SwerveModule extends GBSubsystem {
 
     public int getRotationNormalizedTicks(){ return getRotationTicks()%1024; }
 
-    public int getRotationDegrees(){ return getRotationTicks() * 360/1024; }
+    public double getRotationRads(){ return getRotationTicks() * (2*Math.PI)/1024; }
 
-    public int getNormalizedRotationDegrees(){return getRotationNormalizedTicks() * 360/1024; }
+    public double getNormalizedRotationRads(){return getRotationNormalizedTicks() * (2*Math.PI)/1024; }
 
     public double getDriveVel(){
         return getDriveEncoder().getNormalizedVelocity();
@@ -81,7 +81,6 @@ public class SwerveModule extends GBSubsystem {
      *
      * @return velocity in units per 0.1 sec
      */
-
     public double getRotationVel(){
         return getRotationEncoder().getAnalogInVel();
     }
@@ -91,7 +90,6 @@ public class SwerveModule extends GBSubsystem {
      *
      * @return velocity in rads per sec
      */
-
     public double getNormalizedRotationVel(){
         return getRotationVel() * 20 * Math.PI/1024;
     }
