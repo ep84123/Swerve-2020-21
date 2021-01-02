@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.greenblitz.bigRodika.RobotMap;
 import edu.greenblitz.gblib.encoder.SparkEncoder;
+import edu.wpi.first.wpilibj.CAN;
 import org.greenblitz.motion.pid.PIDObject;
 
 public class SwerveModule extends GBSubsystem {
@@ -71,12 +72,17 @@ public class SwerveModule extends GBSubsystem {
         m_Rotation.set(power);
     }
 
-    /**
-     *
-     * @param portID - the port of the module to follow
-     */
-    public void setAsFollowerOf(double portID){
-        m_Rotation.set(ControlMode.Follower, portID);
+    public void followRotation(double leaderPort){
+        m_Rotation.set(ControlMode.Follower, leaderPort);
+    }
+
+    public void followDrive(CANSparkMax leader){
+        m_Drive.follow(leader);
+    }
+
+    public void follow(double rotationLeader, CANSparkMax driveLeader){
+        followRotation(rotationLeader);
+        followDrive(driveLeader);
     }
 
     public void totalInvert(boolean driveInvert, boolean rotateInvert){
