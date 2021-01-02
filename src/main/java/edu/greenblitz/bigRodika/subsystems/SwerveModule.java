@@ -1,6 +1,7 @@
 package edu.greenblitz.bigRodika.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -17,6 +18,8 @@ public class SwerveModule extends GBSubsystem {
     private final int ID;
     private boolean isDriverInverted, isRotatorInverted;
     private PIDObject rotatePID;
+    private static int rotatePIDSlot = 0, rotatePIDIdx = 0;
+    private static int timeoutMs = 20;
 
     /**
      * SwerveModule Ctor without PID (default PID is 0 0 0 0)
@@ -31,7 +34,9 @@ public class SwerveModule extends GBSubsystem {
         m_Rotation = new WPI_TalonSRX(rotatePort);
         m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
         driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
-        rotatePID = new PIDObject(0.0,0.0,0.0,0.0);
+        setRotatePID(new PIDObject(0.0,0.0,0.0,0.0));
+        m_Rotation.configSelectedFeedbackSensor(FeedbackDevice.Analog,rotatePIDIdx,timeoutMs);
+        //m_Rotation.setSensorPhase(true); sets the encoder direction in compare to the motor direction
     }
 
     /**
@@ -43,7 +48,7 @@ public class SwerveModule extends GBSubsystem {
      */
     SwerveModule(int rotatePort, int drivePort, int ID, PIDObject rotatePID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
         this(rotatePort, drivePort, ID);
-        this.rotatePID = rotatePID;
+        setRotatePID(rotatePID);
     }
 
     /**
@@ -96,6 +101,10 @@ public class SwerveModule extends GBSubsystem {
 
     public void setRotatePID(PIDObject pid){
         this.rotatePID = pid;
+        m_Rotation.config_kP(rotatePIDSlot,pid.getKp(),timeoutMs);
+        m_Rotation.config_kI(rotatePIDSlot,pid.getKi(),timeoutMs);
+        m_Rotation.config_kD(rotatePIDSlot,pid.getKd(),timeoutMs);
+        m_Rotation.config_kF(rotatePIDSlot,pid.getKf(),timeoutMs);
     }
 
     public boolean isDriverInverted() {
