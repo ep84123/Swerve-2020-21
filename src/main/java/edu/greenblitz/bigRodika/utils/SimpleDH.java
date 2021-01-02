@@ -34,10 +34,19 @@ public class SimpleDH extends AbstractDH{
     @Override
     public boolean handle(double angle, double linVel) {
         double val = ftv(angle, linVel, this.driverInput, this.pow);
-        return val <= 0 && linVel < 0; // if the value is negative we want to drive inverted
+        return val <= 0; // if the value is negative we want to drive inverted
     }
 
+    /**
+     *
+     * @param t - is the
+     * @param v - is
+     * @param a
+     * @param p
+     * @return
+     */
     public static double ftv(double t, double v, double a, double p ){
+        //the function that calculates if should go inverted
         return Math.signum(180 - 2*t) * (Math.pow(Math.abs(t-90), p )) + a*Math.abs(v);
     }
 
