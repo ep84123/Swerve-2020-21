@@ -42,12 +42,7 @@ public class SwerveModule extends GBSubsystem {
      * @param rotatePID - PID for rotation
      */
     SwerveModule(int rotatePort, int drivePort, int ID, PIDObject rotatePID) { // I'm not sure how to give port numbers in    init' should i just add theme to init?
-        this.ID = ID;
-        this.isDriverInverted = false;
-        this.isRotatorInverted = false;
-        m_Rotation = new WPI_TalonSRX(rotatePort);
-        m_Drive = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless); // TODO: check device type (2nd arg)
-        driveEncoder = new SparkEncoder(RobotMap.Limbo2.Chassis.SwerveModule.NORMALIZER_SPARK, m_Drive);
+        this(rotatePort, drivePort, ID);
         this.rotatePID = rotatePID;
     }
 
@@ -99,6 +94,10 @@ public class SwerveModule extends GBSubsystem {
         isRotatorInverted = invert;
     }
 
+    public void setRotatePID(PIDObject pid){
+        this.rotatePID = pid;
+    }
+
     public boolean isDriverInverted() {
         return isDriverInverted;
     }
@@ -127,7 +126,6 @@ public class SwerveModule extends GBSubsystem {
         return getRotationEncoder().getAnalogInVel();
     }
 
-
     /**
      * Itgil wrote this complains to him
      * @return velocity in rads per sec
@@ -154,5 +152,9 @@ public class SwerveModule extends GBSubsystem {
 
     public int getID() {
         return ID;
+    }
+
+    public PIDObject getRotatePID(){
+        return this.rotatePID;
     }
 }
