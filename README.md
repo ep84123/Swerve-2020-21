@@ -1,2 +1,2 @@
-# Infinite-Reee-2020
-The robot code for 2020 season - infinite recharge
+# Swerve Drive
+The code for the Swerve Drive Mechanism. This project is in working progress
